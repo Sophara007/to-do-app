@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import{ useState, useEffect, useCallback } from "react";
 import { getPhoto } from "../data/stasticData.jsx";
 import { InputContainer } from '../container/inputContainer.jsx';
-import { ThoughtTable } from "../container/thoughtTable.jsx";
+import {ThoughtTable} from "../container/thoughtTable.jsx";
 import { WeatherTeller } from "../components/weatherTeller.jsx";
-import { Quotes } from "../components/quotes.jsx";
+import { Quotes} from "../components/quotes.jsx";
 
 export function HomePage() {
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
@@ -12,7 +12,7 @@ export function HomePage() {
     useEffect(() => {
         const fetchPhoto = async () => {
             try {
-                const data = await getPhoto(); // Call getPhoto as a function
+                const data = await getPhoto();
                 setPicture(data);
             } catch (error) {
                 console.error("Error fetching photo:", error);
@@ -20,16 +20,15 @@ export function HomePage() {
         };
 
         fetchPhoto();
-
     }, []);
 
-    const handleSwipeRight = () => {
+    const handleSwipeRight = useCallback(() => {
         setCurrentImgIndex((prevIndex) => (prevIndex + 1) % picture.length);
-    };
+    }, [picture.length]);
 
-    const handleSwipeLeft = () => {
+    const handleSwipeLeft = useCallback(() => {
         setCurrentImgIndex((prevIndex) => (prevIndex - 1 + picture.length) % picture.length);
-    };
+    }, [picture.length]);
 
     return (
         <div
@@ -39,7 +38,7 @@ export function HomePage() {
             <WeatherTeller />
             <InputContainer />
             <div className="flex justify-center mt-12 h-3/6">
-                <ThoughtTable handleSwipeLeft={handleSwipeLeft} handleSwipeRight={handleSwipeRight} currentImgIndex={currentImgIndex} />
+                <ThoughtTable handleSwipeLeft={handleSwipeLeft} handleSwipeRight={handleSwipeRight} />
             </div>
             <Quotes />
         </div>
