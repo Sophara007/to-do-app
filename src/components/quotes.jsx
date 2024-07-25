@@ -19,7 +19,7 @@ export function Quotes() {
 
     return (
 
-        <p className="text-center text-xl sm:text-2xl md:text-3xl font-bold text-stone-950 shadow-2xl font-serif">
+        <p className="text-center text-xl sm:text-2xl md:text-3xl font-bold text-yellow-500 shadow-2xl font-serif">
             {quote.text}
         </p>
     );
