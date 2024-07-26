@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getQuote } from "../data/stasticData.jsx";
 
-export function Quotes() {
+ function Quote() {
     const [quote, setQuote] = useState(null);
 
     const fetchQuote = useCallback(async () => {
@@ -30,3 +30,4 @@ export function Quotes() {
         </p>
     );
 }
+export const Quotes = React.memo(Quote);

@@ -4,8 +4,9 @@ import { SwipeRight } from '../components/swipeRight';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeThought, selectThought, updateDone } from '../reducers/thoughtSlice';
 import './tableStyles.css';
+import React from "react";
 
-export function ThoughtTable({ handleSwipeLeft, handleSwipeRight }) {
+ function ThoughtTables({ handleSwipeLeft, handleSwipeRight }) {
     const thoughts = useSelector(selectThought);
     const dispatch = useDispatch();
 
@@ -41,3 +42,4 @@ export function ThoughtTable({ handleSwipeLeft, handleSwipeRight }) {
         </div>
     );
 }
+export const ThoughtTable = React.memo(ThoughtTables);

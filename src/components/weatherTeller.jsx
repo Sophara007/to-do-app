@@ -1,9 +1,9 @@
 import { getWeatherData } from "../data/stasticData.jsx";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectThought } from "../reducers/thoughtSlice.jsx";
 
-export function WeatherTeller() {
+ function WeatherTellers() {
     const [weatherData, setWeatherData] = useState({
         location: { name: "Phnom Penh" },
         current: {
@@ -56,3 +56,4 @@ export function WeatherTeller() {
         </>
     );
 }
+export const WeatherTeller = React.memo(WeatherTellers);
