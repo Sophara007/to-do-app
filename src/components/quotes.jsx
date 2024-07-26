@@ -1,24 +1,30 @@
-import { useEffect, useState } from "react";
-import {getQuote} from "../data/stasticData.jsx";
+import { useEffect, useState, useCallback } from "react";
+import { getQuote } from "../data/stasticData.jsx";
 
 export function Quotes() {
-    const [quote, setQuote] = useState(
-    []);
+    const [quote, setQuote] = useState(null);
 
-    useEffect(() => {
-        const fetchQuote = async () => {
+    const fetchQuote = useCallback(async () => {
+        try {
             const data = await getQuote();
             setQuote(data);
-        };
+        } catch (error) {
+            console.error("Error fetching quote:", error);
+        }
+    }, []);
 
+    useEffect(() => {
         fetchQuote();
         const intervalId = setInterval(fetchQuote, 40000);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [fetchQuote]);
+
+    if (!quote) {
+        return <p>Loading...</p>;
+    }
 
     return (
-
         <p className="text-center text-xl sm:text-2xl md:text-3xl font-bold text-yellow-500 shadow-2xl font-serif">
             {quote.text}
         </p>

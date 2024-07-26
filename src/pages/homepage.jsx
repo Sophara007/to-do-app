@@ -1,9 +1,9 @@
-import{ useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getPhoto } from "../data/stasticData.jsx";
 import { InputContainer } from '../container/inputContainer.jsx';
-import {ThoughtTable} from "../container/thoughtTable.jsx";
+import { ThoughtTable } from "../container/thoughtTable.jsx";
 import { WeatherTeller } from "../components/weatherTeller.jsx";
-import { Quotes} from "../components/quotes.jsx";
+import { Quotes } from "../components/quotes.jsx";
 
 export function HomePage() {
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
@@ -29,6 +29,15 @@ export function HomePage() {
     const handleSwipeLeft = useCallback(() => {
         setCurrentImgIndex((prevIndex) => (prevIndex - 1 + picture.length) % picture.length);
     }, [picture.length]);
+
+    // Preload images
+    const preloadedImages = useMemo(() => {
+        return picture.map((pic) => {
+            const img = new Image();
+            img.src = pic.urls.full;
+            return img;
+        });
+    }, [picture]);
 
     return (
         <div
