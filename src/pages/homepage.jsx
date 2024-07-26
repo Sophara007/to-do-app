@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getPhoto } from "../data/stasticData.jsx";
 import { InputContainer } from '../container/inputContainer.jsx';
 import { ThoughtTable } from "../container/thoughtTable.jsx";
@@ -8,12 +8,20 @@ import { Quotes } from "../components/quotes.jsx";
 export function HomePage() {
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
     const [picture, setPicture] = useState([]);
+    const [preloadedImages, setPreloadedImages] = useState([]);
 
     useEffect(() => {
         const fetchPhoto = async () => {
             try {
                 const data = await getPhoto();
                 setPicture(data);
+
+                const images = data.map((pic) => {
+                    const img = new Image();
+                    img.src = pic.urls.full;
+                    return img;
+                });
+                setPreloadedImages(images);
             } catch (error) {
                 console.error("Error fetching photo:", error);
             }
@@ -30,19 +38,10 @@ export function HomePage() {
         setCurrentImgIndex((prevIndex) => (prevIndex - 1 + picture.length) % picture.length);
     }, [picture.length]);
 
-    // Preload images
-    const preloadedImages = useMemo(() => {
-        return picture.map((pic) => {
-            const img = new Image();
-            img.src = pic.urls.full;
-            return img;
-        });
-    }, [picture]);
-
     return (
         <div
             className="bg-cover bg-center h-screen w-screen"
-            style={{ backgroundImage: `url(${picture[currentImgIndex]?.urls?.full})` }}
+            style={{ backgroundImage: `url(${preloadedImages[currentImgIndex]?.src})` }}
         >
             <WeatherTeller />
             <InputContainer />
